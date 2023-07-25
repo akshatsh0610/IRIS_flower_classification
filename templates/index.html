@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IRIS Flower Prediction-ML Projects</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Bootstrap Font Icon CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand"><b>IRIS Flower Species Prediction</b></a>
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-2">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Docs</a>
+                </li>
+            </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="headings my-4">
+        <a class="brand" id="brand" href="#">
+            <img src="static/images/iris_logo.png" alt="" width="200" height="150">
+        </a>
+        <br>
+        <h1 class="text-center my-2"><b>IRIS Flower Prediction</b></h1>
+    </div>
+    <style>
+        #brand img {
+            margin-left: 440pt;
+        }
+
+        form input {
+            margin-bottom: 3px;
+        }
+    </style>
+    <div class="flowers mx-4 my-4">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card">
+                    <img src="static/images/setosa.jpeg" class="card-img-top" alt="..." width="60" height="300">
+                    <div class="card-body">
+                        <h5 class="card-title">Iris-Setosa</h5>
+                        <p class="card-text">Iris setosa, the bristle-pointed iris, is a species of flowering plant in
+                            the genus Iris of the family Iridaceae, it belongs the subgenus Limniris and the series
+                            Tripetalae.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img src="static/images/versicolor.jpg" class="card-img-top" alt="..." width="60" height="300">
+                    <div class="card-body">
+                        <h5 class="card-title">Iris-Versicolor</h5>
+                        <p class="card-text">Iris versicolor is also commonly known as the blue flag, harlequin
+                            blueflag, larger blue flag, northern blue flag, and poison flag, plus other variations of
+                            these names and in Britain and Ireland as purple iris</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img src="static/images/vergenia.jpeg" class="card-img-top" alt="..." width="60" height="300">
+                    <div class="card-body">
+                        <h5 class="card-title">Iris-Virginica</h5>
+                        <p class="card-text">Iris virginica, with the common name Virginia blueflag, Virginia iris,
+                            great blue flag,is a perennial species of flowering plant in the Iridaceae (iris) family,
+                            native to central and eastern North America.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container my-5">
+            <form action="{{ url_for('analyze')}}" method="POST" class="row">
+                <div class="form-outline col-6 my-2">
+                    <label for="inputnumber" class="form-label"><b>Sepal Length (in cm)</b></label>
+                    <input type="number" min="4" max="8" value="0" step="0.1" class="form-control" name="sepal_length" id="inputnumber1">
+                </div>
+
+
+                <div class="form-outline col-6 my-2">
+                    <label for="inputnumber" class="form-label"><b>Sepal Width (in cm)</b></label>
+                    <input type="number" min="2" max="5" value="0" step="0.1" class="form-control" name="sepal_width" id="inputnumber4" required="required">
+                </div>
+
+                <div class="form-outline col-6 my-2">
+                    <label for="inputnumber" class="form-label"><b>Petal Length (in cm)</b></label>
+                    <input type="number" min="0" max="7" value="0" step="0.1" class="form-control" name="petal_length" id="inputnumber2" required="required">
+                </div>
+                <br>
+                <div class="form-outline col-6 my-2">
+                    <label for="inputnumber" class="form-label"><b>Petal Width (in cm)</b></label>
+                    <input type="number" min="0" max="3" value="0" step="0.1" class="form-control" name="petal_width" id="inputnumber3" required="required">
+                </div>
+
+                <br>
+                <br>
+                <div class="col-12 my-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="gridCheck">
+                        <label class="form-check-label" for="gridCheck" required="required">
+                            Check me out
+                        </label>
+                    </div>
+                </div>
+                <br>
+                <div class="d-grid my-3">
+                    <button class="btn btn-success"  value="Predict" type="submit">Predict the Flower Category</button>
+                    <button class="btn btn-danger my-2"  value="Clear" type="reset">Reset</button>
+                </div>
+            </form>
+
+            <div class="col s12 m4 offers">
+                <h5>Prediction</h5>
+                  <div class="collection" role="alert">
+                    <p  class="collection-item active blue">Predicted result = {{ result_prediction }} </p>
+                </div>
+                <div class="card-image waves-effect waves-block waves-light">
+
+                      {% if result_prediction == ['versicolor'] %}
+                        <img src="static/images/versicolor.jpg" width="200px" height="200px">
+
+                        {% elif result_prediction == ['setosa']  %}
+                          <img src="static/images/setosa.jpeg" width="200px" height="200px">
+
+                        {% elif result_prediction == ['virginica']  %}
+                          <img src="static/images/virgenia.jpeg"width="200px" height="200px" >
+
+                        {% else %}
+                            <p></p>
+
+
+                       {% endif%}
+                </div>
+
+              </div>
+
+            <div class="content my-5">
+                <h2 class="text-center"><b>Thank You!</b></h2>
+                <p class="text-center">This Machine Learning Projects are developed and run under the Atobtech Group. All the
+                    information are Verified and Correct.All the General rules and Guidlines are follows at the time of making website. You can visit my all social
+                    media accounts for verify the information and more understanding. </p>
+                <div class="text-center" >
+                    <a class="mx-1" href="https://www.facebook.com/akshaykumar.hiran.1" ><i class="bi bi-facebook" style="font-size: 30px;"></i></a>
+                    <a class="mx-1" href="https://www.instagram.com/akshaykumar_3294/"><i class="bi bi-instagram" style="font-size: 30px;" ></i></a>
+                    <a class="mx-1" href="https://www.linkedin.com/in/akshay-kumar-hiran-61407a209/"><i
+                            class="bi bi-linkedin" style="font-size: 30px;"></i></a>
+                    <a class="mx-1" href="https://twitter.com/akshay_3294"><i class="bi bi-twitter" style="font-size: 30px;"></i></a>
+                    <a class="mx-1" href="https://www.github.com/Ak3294"><i class="bi bi-github" style="font-size: 30px;"></i></a>
+                </div>
+                <div class="text-center">
+                    <p>copyright2023 &copy; <a href="https://atobtech.blogspot.com">atobtech.blogspot.com</a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>
